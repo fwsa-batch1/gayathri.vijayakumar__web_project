@@ -10,7 +10,7 @@ let loadImage = (src,callback) => {
 
 // create a image path and retun the image.
 let imagePath = (frameNumber) => {
-    return "images/" + frameNumber + ".jpg";
+    return "./images/" + frameNumber + ".jpg";
 }
 
 // In the frames variable i load a images like a list.
