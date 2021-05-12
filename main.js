@@ -92,7 +92,7 @@ let animate = (ctx, images, animation, callback) => {
     if (!gameOver) setTimeout(callback, images[animation].length * 100);
   };
 
-ctx.fillText("score"+count, 5, 35);
+context.fillText("score"+count, 5, 35);
 
 
 count = 0;
