@@ -1,5 +1,5 @@
 var c = document.getElementById("myName");
-let ctx = c.getContext("2d");
+let context = c.getContext("2d");
 
 // here i load the images..
 let loadImage = (src,callback) => {
@@ -30,26 +30,21 @@ let frames = {
        55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73,
        74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85,
     ],
-    isTheBoyIsOut : [86], // if the girl is out this list image will be call
+
+    // if the girl is out this list image will be call
+    isTheBoyIsOut : [86] 
 };
 
-let loadImages = (callback) => 
-{
-    let images = {
-        Run : [] ,
-        theBoyComeLeft : [],
-        theBoyComeRight : [],
-
-        isTheBoyIsOut : [],
-    };
+let loadImages = (callback) => {
+    let images = { Run : [] , theBoyComeLeft : [], theBoyComeRight : [], isTheBoyIsOut : [] };
     let imagesToLoad = 0 ;
 
-    ["Run","theBoyComeLeft","theBoyComeRight","isTheBoyIsOut"].forEach
-    ((animation) => {
+    ["Run","theBoyComeLeft","theBoyComeRight","isTheBoyIsOut"].forEach(
+      (animation) => {
         let animationFrames = frames[animation];
         imagesToLoad = imagesToLoad + animationFrames.length;
         animationFrames.forEach((frameNumber) => {
-            let path = imagePath(frameNumber,animation);
+            let path = imagePath(frameNumber);
             loadImage(path,(image)=>{
                 images[animation].push(image);
                 imagesToLoad = imagesToLoad-1;
@@ -77,7 +72,7 @@ let animate = (ctx, images, animation, callback) => {
           ctx.clearRect(0, 0, 200, 500);
           ctx.drawImage(image, 0, 0, 1300, 500);
           ctx.font = "50px Arial";
-          ctx.fillText("Score" + count, 05, 35);
+          ctx.fillText("Score" + count, 5, 35);
         }
         if (
           (animation === "theBoyComeLeft" && index === 6) ||
@@ -97,40 +92,28 @@ let animate = (ctx, images, animation, callback) => {
     if (!gameOver) setTimeout(callback, images[animation].length * 100);
   };
 
-ctx.fillText("score"+count,05,35);
+ctx.fillText("score"+count, 5, 35);
 
 
 count = 0;
 
 
 loadImages((images) => {
-    //aux secting the type of animation frames to run and sending to animate function
-    let aux = () => {
-      console.log("gameOver", gameOver);
-      let selectedAnimation = !gameOver
-        ? ["Run", "theBoyComeLeft", "theBoyComeRight"][
-            Math.floor(Math.random() * 3)
-          ]
-        : "isTheBoyIsOut";
-      animate(
-        ctx,
-        images,
-        selectedAnimation,
-        gameOver
-          ? () => {
-              console.log("Game over");
-              
-            }
-          : aux
-      );
-    };
-    aux();
-    document.addEventListener("keyup", (event) => {
-      const key = event.key;
-      if (key === "ArrowUp" && !jumping) {
-        
-        console.log(jumping)
-        jumping = true;
-      }
-    });
+  //aux secting the type of animation frames to run and sending to animate function
+  let aux = () => {
+    console.log("gameOver", gameOver);
+    let selectedAnimation = !gameOver ? ["Run", "theBoyComeLeft", "theBoyComeRight"][Math.floor(Math.random() * 3)] : "isTheBoyIsOut";
+    animate(context, images, selectedAnimation, (gameOver ? () => console.log("Game over") : aux));
+  };
+
+  aux();
+
+  document.addEventListener("keyup", (event) => {
+    const key = event.key;
+    if (key === "ArrowUp" && !jumping) {
+      
+      console.log(jumping)
+      jumping = true;
+    }
   });
+});
